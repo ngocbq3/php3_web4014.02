@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,15 +24,13 @@ Route::get("/create", function () {
 
 
 Route::prefix("posts")->group(function () {
-    Route::get("/{id}/edit", function ($id) {
-        return "Edit post id: $id";
-    })->name('post.edit');
-    Route::get("/index", function () {
-        return "List Post";
-    });
-    Route::get("/create", function () {
-        return "Create Post";
-    });
+
+    Route::get("/", [PostController::class, 'index'])->name('posts.index');
+    Route::get("/create", [PostController::class, 'create'])->name('posts.create');
+    Route::post("/create", [PostController::class, 'store']);
+    Route::get("/{id}/edit", [PostController::class, 'edit'])->name('posts.edit');
+    Route::put("/{id}/edit", [PostController::class, 'update']);
+    Route::delete("/{id}/delete", [PostController::class, "destroy"])->name('posts.destroy');
 });
 
 //Sử dụng view
