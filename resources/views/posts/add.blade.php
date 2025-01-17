@@ -11,19 +11,19 @@
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Image</label>
-            <input type="image" name="image" id="" class="form-control">
+            <input type="file" name="image" id="" class="form-control">
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Description</label>
-            <textarea name="description" rows="4"></textarea>
+            <textarea name="description" rows="4" class="form-control"></textarea>
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Content</label>
-            <textarea name="content" rows="10"></textarea>
+            <textarea name="content" rows="10" class="form-control"></textarea>
         </div>
         <div class="mb-3">
             <label for="" class="form-label">Category</label>
-            <select name="category_id" id="">
+            <select name="category_id" id="" class="form-control">
                 @foreach ($categories as $cate)
                     <option value="{{ $cate->id }}">
                         {{ $cate->name }}

@@ -17,4 +17,25 @@ class PostController extends Controller
 
         return view("posts.index", compact('posts'));
     }
+
+    public function create()
+    {
+        $categories = DB::table('categories')->get();
+        return view('posts.add', compact('categories'));
+    }
+
+    public function store(Request $request)
+    {
+        $data = $request->except('image', '_token');
+        $image = "";
+
+        //xử lý file ảnh
+        if ($request->hasFile('image')) {
+            $image = $request->file('image')->store('images');
+        }
+
+        $data['image'] = $image;
+        DB::table('posts')->insert($data);
+        return redirect()->route('posts.index')->with('Success');
+    }
 }

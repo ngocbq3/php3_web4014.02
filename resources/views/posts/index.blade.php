@@ -21,7 +21,7 @@
                     <th scope="col">Description</th>
                     <th scope="col">Category Name</th>
                     <th>
-                        <a href="#">Add New</a>
+                        <a href="{{ route('posts.create') }}" class="btn btn-primary">Add New</a>
                     </th>
                 </tr>
             </thead>
@@ -29,6 +29,7 @@
                 @foreach ($posts as $post)
                     <tr>
                         <th scope="row">{{ $post->id }}</th>
+                        <td>{{ $post->title }}</td>
                         <td>{{ $post->image }}</td>
                         <td>{{ $post->view }}</td>
                         <td>{{ $post->description }}</td>
