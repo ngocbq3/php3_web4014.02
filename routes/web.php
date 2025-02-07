@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -24,13 +25,17 @@ Route::get("/create", function () {
 
 
 Route::prefix("posts")->group(function () {
-
     Route::get("/", [PostController::class, 'index'])->name('posts.index');
     Route::get("/create", [PostController::class, 'create'])->name('posts.create');
     Route::post("/create", [PostController::class, 'store']);
     Route::get("/{id}/edit", [PostController::class, 'edit'])->name('posts.edit');
     Route::put("/{id}/edit", [PostController::class, 'update']);
     Route::delete("/{id}/delete", [PostController::class, "destroy"])->name('posts.destroy');
+});
+
+//Admin
+Route::prefix('admin')->group(function () {
+    Route::get('/posts', [AdminPostController::class, 'index'])->name('admin.posts.list');
 });
 
 //Sử dụng view
