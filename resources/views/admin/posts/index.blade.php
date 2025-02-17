@@ -28,7 +28,16 @@
                         <td>{{ $post->view }}</td>
                         <td>{{ $post->category->name }}</td>
                         <td>
-                            Edit | Delete
+                            <div class="d-flex">
+                                <a href="{{ route('admin.posts.edit', $post->id) }}" class="btn btn-primary">Edit</a>
+
+                                <form action="{{ route('admin.posts.destroy', $post->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Bạn có chắc chắn xóa không?')">Delete</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 @endforeach

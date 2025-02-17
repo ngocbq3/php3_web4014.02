@@ -7,18 +7,30 @@
             <div class="mb-3">
                 <label for="" class="form-label">Title</label>
                 <input type="text" name="title" id="" class="form-control">
+                @error('title')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Image</label>
                 <input type="file" name="image" id="" class="form-control">
+                @error('image')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Description</label>
                 <input type="text" name="description" id="" class="form-control">
+                @error('description')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Content</label>
                 <textarea name="content" class="form-control" rows="10"></textarea>
+                @error('content')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Category Name</label>

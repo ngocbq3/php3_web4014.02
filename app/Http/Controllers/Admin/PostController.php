@@ -25,7 +25,19 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->except('image');
+        $data = $request->validate(
+            [
+                'title' => ['required'],
+                'image' => ['nullable', 'image'],
+                'description' => ['required'],
+                'content' => ['required'],
+                'category_id' => ['required']
+            ],
+            [
+                'title.required' => 'Bạn cần nhập tiêu đề cho bài viết',
+                'image.image'       => "Bạn cần nhập đúng định dạng ảnh",
+            ]
+        );
 
         $image = "";
 
@@ -37,5 +49,39 @@ class PostController extends Controller
 
         Post::query()->create($data);
         return redirect()->route('admin.posts.list')->with('message', 'Create success');
+    }
+
+    public function destroy($id)
+    {
+        Post::find($id)->delete();
+        return redirect()->route('admin.posts.list')->with('message', 'Delete success');
+    }
+
+    public function edit($id)
+    {
+        $post = Post::find($id);
+        $categories = Category::all();
+
+        return view("admin.posts.edit", compact('post', 'categories'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $data = $request->except('image');
+
+        $post = Post::find($id);
+
+        $image = $post->image;
+
+        //upload image
+        if ($request->hasFile('image')) {
+            $image = $request->file('image')->store('images');
+        }
+        $data['image'] = $image;
+
+        //Cập nhật
+        $post->update($data);
+
+        return redirect()->back()->with('message', 'Cập nhật dữ liệu thành công');
     }
 }
