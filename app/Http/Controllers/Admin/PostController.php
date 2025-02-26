@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -23,21 +24,9 @@ class PostController extends Controller
         return view('admin.posts.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $data = $request->validate(
-            [
-                'title' => ['required'],
-                'image' => ['nullable', 'image'],
-                'description' => ['required'],
-                'content' => ['required'],
-                'category_id' => ['required']
-            ],
-            [
-                'title.required' => 'Bạn cần nhập tiêu đề cho bài viết',
-                'image.image'       => "Bạn cần nhập đúng định dạng ảnh",
-            ]
-        );
+        $data = $request->except('image');
 
         $image = "";
 

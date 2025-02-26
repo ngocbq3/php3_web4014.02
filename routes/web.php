@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +19,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-Route::get("/create", function () {
-    return "Create New Website";
-});
+})->name('home');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::prefix("posts")->group(function () {
     Route::get("/", [PostController::class, 'index'])->name('posts.index');
@@ -34,19 +35,21 @@ Route::prefix("posts")->group(function () {
 });
 
 //Admin
-Route::prefix('admin')->group(function () {
-    Route::get('/posts', [AdminPostController::class, 'index'])->name('admin.posts.list');
-    Route::get('/posts/create', [AdminPostController::class, 'create'])->name('admin.posts.create');
-    Route::post('/posts/create', [AdminPostController::class, 'store']);
-    Route::get('/posts/edit/{id}', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
-    Route::put('/posts/edit/{id}', [AdminPostController::class, 'update']);
-    Route::delete('/posts/delete/{id}', [AdminPostController::class, 'destroy'])->name('admin.posts.destroy');
+Route::middleware(CheckAuth::class)->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::get('/posts', [AdminPostController::class, 'index'])->name('admin.posts.list');
+        Route::get('/posts/create', [AdminPostController::class, 'create'])->name('admin.posts.create');
+        Route::post('/posts/create', [AdminPostController::class, 'store']);
+        Route::get('/posts/edit/{id}', [AdminPostController::class, 'edit'])->name('admin.posts.edit');
+        Route::put('/posts/edit/{id}', [AdminPostController::class, 'update']);
+        Route::delete('/posts/delete/{id}', [AdminPostController::class, 'destroy'])->name('admin.posts.destroy');
+    });
 });
 
-//Sử dụng view
-Route::get('/about', function () {
-    return view('about');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/products', [ProductController::class, 'index']);
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+require __DIR__ . '/auth.php';
